@@ -1,0 +1,40 @@
+# Build output
+bin/
+obj/
+out/
+output/
+artifacts/
+
+# IDE and local machine files
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Local credentials and environment files
+.env
+.env.*
+!.env.example
+appsettings.json
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.local.json
+
+# Logs and generated diagnostics
+logs/
+*.log
+.gstack/
+
+# Local upload and email artifacts
+wwwroot/uploads/
+wwwroot/UploadedEml/
+Search-Pro_Attachment/
+
+# NL2SQL generated local artifacts
+data/golden/
+data/archive/
+data/failures/
+data/scores/
+data/triage-queue/
+data/golden-v2/
+work/

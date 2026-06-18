@@ -29,6 +29,37 @@ Text-to-SQL systems can fail in ways that are hard to see from the final table a
 
 This project explores those questions through a backend pipeline that routes a user question, grounds it in a schema catalog, asks an LLM for a structured semantic plan, renders SQL server-side, validates read-only constraints, executes a query, and returns result metadata for human review.
 
+## Engineering Evidence
+
+This repository does not claim private production accuracy. Instead, it shows how a Text-to-SQL system was hardened through schema grounding, guarded SQL generation, validation layers, result contracts, and regression-oriented failure analysis.
+
+Quantitative evidence below comes from a sanitized audit of the private development history before this public snapshot was created. The original history and internal data are not included in this repository.
+
+| Evidence | Count |
+| --- | ---: |
+| Text-to-SQL related commits reviewed | 124 |
+| Guard / validation / trust related commits reviewed | 84 |
+| Text-to-SQL model-side files reviewed | 114 |
+| Text-to-SQL related test files reviewed | 72 |
+| Trust contract modules reviewed | 7 |
+| Sensitive keyword hits in this public snapshot | 0 |
+| Forbidden tracked files in this public snapshot | 0 |
+
+```mermaid
+pie title Text-to-SQL Hardening Commit Signal
+    "Guard / validation / trust commits" : 84
+    "Other Text-to-SQL commits" : 40
+```
+
+```mermaid
+pie title Verification Artifact Mix
+    "Model-side files" : 114
+    "Test files" : 72
+    "Trust contract modules" : 7
+```
+
+See [docs/engineering-evidence.md](docs/engineering-evidence.md) for the guardrail comparison and failure coverage matrix.
+
 ## System Flow
 
 1. User question
@@ -137,6 +168,7 @@ These are intentionally listed as planned work, not current functionality:
 ## Documentation Map
 
 - [docs/research-notes.md](docs/research-notes.md): research framing and evaluation ideas
+- [docs/engineering-evidence.md](docs/engineering-evidence.md): quantitative evidence, guardrail comparison, and failure coverage
 - [docs/failure-analysis.md](docs/failure-analysis.md): failure taxonomy using mock schema
 - [docs/example-queries.md](docs/example-queries.md): public-safe query examples
 - [docs/mock-schema.sql](docs/mock-schema.sql): mock schema and dummy data

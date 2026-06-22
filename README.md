@@ -1,102 +1,39 @@
-# Hwang Junsoo / 황준수
+# Search-Pro: Schema-Grounded Text-to-SQL Assistant
 
-Backend Engineer -> XAI / Agent Explainability / Text-to-SQL Evaluation Researcher-in-Progress
+## One-line Summary
 
-I build backend systems and study how AI-generated outputs can be verified, debugged, and trusted by humans.
+A Text-to-SQL assistant that translates natural language questions into SQL queries and highlights practical challenges in schema grounding, query validation, failure analysis, and human-verifiable AI outputs.
 
-## Profile
+## Public Snapshot Scope
 
-| Photo | Profile |
-| --- | --- |
-| Add `assets/profile.jpg` here when ready. | **Name:** Hwang Junsoo / 황준수<br>**Role:** Backend Engineer, AI Reliability Researcher-in-Progress<br>**Focus:** Text-to-SQL, schema grounding, explainability, evaluation<br>**GitHub:** [dingmon1019](https://github.com/dingmon1019)<br>**Email:** Add public email here<br>**Phone:** Add only in private/PDF resume version<br>**Location:** South Korea |
+This repository is a sanitized portfolio snapshot. It preserves the research framing, mock schema, example queries, failure taxonomy, and a small mock reference pipeline in `src/SearchProPublic`.
 
-## At a Glance
+The full local application was not copied into this public snapshot because several production files contain internal database names, schema identifiers, uploaded files, and evaluation artifacts. Those files should stay private.
 
-| Category | Summary |
-| --- | --- |
-| Engineering base | Backend systems, database workflows, query endpoints, authentication-aware service logic |
-| AI system focus | Text-to-SQL, schema grounding, validation, failure analysis, human-verifiable traces |
-| Representative project | [Search-Pro: Schema-Grounded Text-to-SQL Assistant](https://github.com/dingmon1019/Search-Pro-Text-to-SQL) |
-| Evidence style | Guardrails, result contracts, failure taxonomies, regression-oriented evaluation |
-| Current direction | XAI / Agent Explainability / Text-to-SQL Evaluation |
+## Portfolio Framing
 
-## My Trajectory
+**Positioning:** Backend Engineer -> XAI / Agent Explainability / Text-to-SQL Evaluation Researcher-in-Progress
 
-| Stage | Direction | What I Worked On | What It Taught Me |
-| --- | --- | --- | --- |
-| Backend engineering | Production-style service logic | APIs, databases, authentication-aware flows, file/data workflows, admin/user screens | Reliable software needs clear boundaries, validation, and observable failure modes. |
-| AI-assisted backend systems | Natural language interfaces over data | Text-to-SQL pipeline, schema context, prompt construction, generated-query execution | Generated answers are not enough. Users need to inspect why an answer was produced. |
-| Researcher-in-progress | Explainability and evaluation | Schema grounding, direct SQL blocking, safety validation, result contracts, failure analysis | Text-to-SQL should be evaluated as a trust and debugging problem, not only as exact-match SQL. |
+Search-Pro is framed here as an engineering case study: how a production-style backend experience can become a concrete research question about explainability, evaluation, and trust in Text-to-SQL systems.
 
-## How I Work
+The core lesson is that Text-to-SQL is not only about generating a syntactically correct query. A useful system also has to make the generated query understandable, verifiable, and debuggable by humans.
 
-| Principle | What It Means In Practice |
-| --- | --- |
-| Trust is engineered | I do not treat LLM output as automatically reliable. I add validation layers around it. |
-| Intermediate states matter | I prefer systems that expose plans, selected fields, validation results, and trace metadata. |
-| Bugs become test material | Repeated failures should become regression cases, not just one-off fixes. |
-| Public work should be safe | I separate public mock artifacts from private data, internal schemas, uploaded files, and local history. |
-| Backend work can become research | Practical failures can be reframed as evaluation questions for AI systems. |
+## Why This Project Matters
 
-## Skills Matrix
+Text-to-SQL systems can fail in ways that are hard to see from the final table alone:
 
-| Area | Tools / Concepts | How I Use Them |
-| --- | --- | --- |
-| Backend | C#, ASP.NET Core MVC, service layers, controller workflows | Build query endpoints, business workflows, and authenticated service logic. |
-| Database | SQL Server, schema catalogs, SQL validation, query execution | Ground generated queries in known objects and validate execution boundaries. |
-| AI systems | LLM prompting, structured outputs, Text-to-SQL, semantic planning | Convert user questions into inspectable intermediate plans before SQL execution. |
-| Evaluation | Regression tests, failure taxonomy, golden-case review, result contracts | Turn failures into measurable cases and compare behavior across guardrails. |
-| Security and privacy | Sanitized snapshots, mock schema, placeholder config, tracked-file checks | Publish portfolio evidence without exposing private data or local configuration. |
+- How can a human trust SQL generated from a natural language question?
+- What failures appear when a query is generated without strong schema grounding?
+- How should Text-to-SQL be evaluated beyond exact-match accuracy?
+- Can validation, execution feedback, and explanation traces make generated queries easier to debug?
 
-## Representative Work
-
-| Project | Problem | What I Built | Evidence | Link |
-| --- | --- | --- | --- | --- |
-| Search-Pro: Schema-Grounded Text-to-SQL Assistant | Generated SQL can be syntactically valid but hard for humans to trust, verify, or debug. | A Text-to-SQL trust pipeline using semantic plans, server-side SQL rendering, read-only validation, result contracts, failure analysis, and public-safe mock documentation. | 124 Text-to-SQL related commits reviewed, 84 guard/validation/trust related commits reviewed, 72 related test files reviewed, public snapshot scan hits 0. | [GitHub repo](https://github.com/dingmon1019/Search-Pro-Text-to-SQL) |
-
-## Search-Pro Case Study
-
-Search-Pro started as a backend Text-to-SQL assistant: a user asks a natural-language question, the system builds schema/context, prompts an LLM, generates SQL, executes a database query, and returns results.
-
-The more interesting problem became trust:
-
-| Question | Why It Matters |
-| --- | --- |
-| Can a human verify generated SQL before trusting the result? | A query can run successfully and still answer the wrong question. |
-| What happens when a model guesses a table or column? | Schema hallucination can create plausible but invalid answers. |
-| How should unsafe or ambiguous requests be handled? | A trustworthy assistant should reject, clarify, or expose uncertainty. |
-| What should evaluation measure beyond exact match? | Production failures involve safety, ambiguity, debuggability, and trace quality. |
-
-### System Flow
-
-1. User question
-2. Schema/context retrieval
-3. Prompt construction
-4. Semantic plan generation
-5. Server-side SQL rendering
-6. SQL validation/safety check
-7. Query execution
-8. Result formatting
-9. Human verification / feedback
-
-### Guardrail Layer Comparison
-
-| Layer | Direct LLM-to-SQL baseline | Search-Pro guarded flow |
-| --- | --- | --- |
-| Model output | SQL text | Semantic plan or clarification |
-| Schema control | Mostly prompt-dependent | Known source and field validation |
-| SQL generation | Model-generated | Server-side renderer |
-| SQL safety | Manual review or shallow checks | Read-only validation gate |
-| Execution readiness | Try and fail | Preflight metadata check |
-| Result correctness | Final table only | Result contract validation |
-| Human verification | Hard to inspect | Trust trace and result metadata |
-| Failure handling | One-off debugging | Regression and harness loop |
+This project explores those questions through a backend pipeline that routes a user question, grounds it in a schema catalog, asks an LLM for a structured semantic plan, renders SQL server-side, validates read-only constraints, executes a query, and returns result metadata for human review.
 
 ## Engineering Evidence
 
 This repository does not claim private production accuracy. Instead, it shows how a Text-to-SQL system was hardened through schema grounding, guarded SQL generation, validation layers, result contracts, and regression-oriented failure analysis.
 
-Quantitative evidence below comes from a sanitized audit of private development history before this public snapshot was created. The original history and internal data are not included in this repository.
+Quantitative evidence below comes from a sanitized audit of the private development history before this public snapshot was created. The original history and internal data are not included in this repository.
 
 | Evidence | Count |
 | --- | ---: |
@@ -121,33 +58,89 @@ pie title Verification Artifact Mix
     "Trust contract modules" : 7
 ```
 
-## Research Direction
+See [docs/engineering-evidence.md](docs/engineering-evidence.md) for the guardrail comparison and failure coverage matrix.
 
-| Question | Current Framing |
-| --- | --- |
-| How can humans verify AI-generated SQL? | Expose semantic plans, selected fields, validation results, and result traces. |
-| How should Text-to-SQL be evaluated beyond exact match? | Measure schema grounding, safety rejection, execution validity, result shape, trace quality, and debuggability. |
-| Can validation and execution feedback improve trust? | Use safety gates, preflight checks, and result contracts to surface failures before users over-trust outputs. |
-| What traces should agentic query systems expose? | Show enough intermediate state for a human to confirm route, filters, axes, measures, and rejection reasons. |
+## System Flow
 
-## Evidence & Artifacts
+1. User question
+2. Schema/context retrieval
+3. Prompt construction
+4. SQL generation via server-rendered semantic plan
+5. SQL validation/safety check
+6. Query execution
+7. Result formatting
+8. Human verification / feedback
 
-| Artifact | Purpose |
-| --- | --- |
-| [docs/engineering-evidence.md](docs/engineering-evidence.md) | Quantitative evidence, guardrail comparison, and failure coverage matrix |
-| [docs/research-notes.md](docs/research-notes.md) | Research framing and evaluation ideas |
-| [docs/failure-analysis.md](docs/failure-analysis.md) | Failure taxonomy using public-safe mock schema |
-| [docs/example-queries.md](docs/example-queries.md) | Public-safe Text-to-SQL examples |
-| [docs/mock-schema.sql](docs/mock-schema.sql) | Mock schema and dummy data |
-| [src/SearchProPublic](src/SearchProPublic) | Minimal public reference pipeline |
-| [.env.example](.env.example) | Placeholder environment configuration |
-| [appsettings.example.json](appsettings.example.json) | Placeholder JSON configuration |
+In the analyzed local implementation, the LLM is constrained to produce a structured semantic plan. Direct model-authored SQL responses are blocked, and SQL is rendered inside the application from schema-grounded plan objects.
 
-## Public Snapshot Scope
+## Key Features
 
-This repository is a sanitized portfolio snapshot. It preserves the research framing, mock schema, example queries, failure taxonomy, and a small mock reference pipeline in `src/SearchProPublic`.
+These features were verified in the original local source before sanitization. The public snapshot keeps only safe documentation and mock reference code.
 
-The full local application was not copied into this public snapshot because private production files can contain internal database names, schema identifiers, uploaded files, and evaluation artifacts. Those files should stay private.
+- ASP.NET Core MVC backend for a natural-language query lab.
+- Authenticated query endpoint that receives screen/type context, user question, prior conversation id, attachments, and template-assist metadata.
+- Schema-aware prompt builder that injects schema catalog context, value catalogs, few-shot examples, conversation history, and attachment context.
+- LLM client with structured JSON response schema for semantic plans.
+- Model response parser that accepts `plan` or `clarify` and blocks direct `sql` responses.
+- Server-side semantic SQL renderer that converts a validated semantic plan into SQL.
+- SQL validation layer that restricts execution to read-only `SELECT` / `WITH ... SELECT` patterns, rejects forbidden tokens, checks allowed objects, and applies row limits.
+- Query execution service with shape preflight and formatted result rows.
+- Clarification path for ambiguous or unsupported questions.
+- Result trace and trust contract fields that expose route status, route source, validation code, result contract code, selected shape, allowed execution level, axes, filters, and a safe trace.
+- SQL viewing is gated by a session-backed unlock flow, instead of being exposed by default.
+- Failure collection, saved conversation review, golden draft generation, and regression-oriented test assets exist for development and evaluation workflows.
+
+## Research Connection
+
+This project connects backend engineering work to the following research questions:
+
+- How can Text-to-SQL systems expose enough reasoning trace for human verification?
+- What SQL generation failures appear in schema-grounded enterprise DBs?
+- Can validation, execution feedback, and explanation traces improve trust?
+- How should Text-to-SQL be evaluated beyond exact-match accuracy?
+
+The interesting research direction is not only whether a query returns the right answer, but whether the system can explain why it chose a source, which fields it used, what constraints were applied, why a query was rejected, and how a human can inspect the result safely.
+
+## Failure Analysis
+
+Failure modes are documented with a public-safe mock schema in [docs/failure-analysis.md](docs/failure-analysis.md).
+
+Covered categories:
+
+- wrong table
+- wrong column
+- invalid join
+- aggregation error
+- hallucinated schema
+- unsafe query
+- ambiguous question
+- correct SQL but misleading result
+
+## Example Queries
+
+Public-safe example queries are listed in [docs/example-queries.md](docs/example-queries.md). They use only the mock schema from [docs/mock-schema.sql](docs/mock-schema.sql).
+
+## Sanitized Reference Code
+
+The public code sample in [src/SearchProPublic](src/SearchProPublic) demonstrates the trust boundary without internal data:
+
+- mock schema catalog
+- prompt preview construction
+- simple semantic planner
+- server-side SQL renderer
+- read-only SQL validator
+- mock execution response
+- trace output for human verification
+
+Run it locally with:
+
+```powershell
+dotnet run --project src/SearchProPublic/SearchProPublic.csproj -- "Show observation counts by age band and topic"
+```
+
+## Public Data and Security Notes
+
+This repository should be published only as a sanitized portfolio snapshot.
 
 Do not publish:
 
@@ -157,22 +150,28 @@ Do not publish:
 - production uploaded files, email exports, spreadsheets, logs, or debug artifacts
 - real table names, real column names, or proprietary schema mappings
 
-## Local Mock Demo
+Use `.env.example`, `appsettings.example.json`, and `docs/mock-schema.sql` for public configuration and examples. Any local `appsettings*.json` file must be scrubbed or replaced with placeholders before GitHub publication.
 
-The public code sample demonstrates the trust boundary without internal data:
+## Planned
 
-```powershell
-dotnet run --project src/SearchProPublic/SearchProPublic.csproj -- "Show observation counts by age band and topic"
-```
+These are intentionally listed as planned work, not current functionality:
+
+- A public demo mode backed only by the mock schema.
+- A human-readable query explanation panel that maps natural language phrases to schema fields.
+- A formal evaluation dashboard comparing exact match, execution accuracy, safety rejection, trace quality, and debuggability.
+- A reproducible benchmark package that can run without internal data.
 
 ## ICML 2026 Conversation Angle
 
 > I built a Text-to-SQL style assistant where natural language questions are converted into SQL and executed against a database. What interested me was not only generation accuracy, but how humans can verify, debug, and trust the generated query. I am now connecting this engineering experience to explainability, schema grounding, and evaluation.
 
-## Contact
+## Documentation Map
 
-| Channel | Link |
-| --- | --- |
-| GitHub | [https://github.com/dingmon1019](https://github.com/dingmon1019) |
-| Portfolio project | [Search-Pro Text-to-SQL](https://github.com/dingmon1019/Search-Pro-Text-to-SQL) |
-| Email | Add public email here |
+- [docs/research-notes.md](docs/research-notes.md): research framing and evaluation ideas
+- [docs/engineering-evidence.md](docs/engineering-evidence.md): quantitative evidence, guardrail comparison, and failure coverage
+- [docs/failure-analysis.md](docs/failure-analysis.md): failure taxonomy using mock schema
+- [docs/example-queries.md](docs/example-queries.md): public-safe query examples
+- [docs/mock-schema.sql](docs/mock-schema.sql): mock schema and dummy data
+- [.env.example](.env.example): placeholder environment configuration
+- [appsettings.example.json](appsettings.example.json): placeholder JSON configuration
+- [src/SearchProPublic](src/SearchProPublic): mock reference pipeline

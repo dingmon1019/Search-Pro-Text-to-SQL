@@ -1,64 +1,38 @@
-# Search-Pro: Schema-Grounded Text-to-SQL Assistant
+# Search-Pro — Text-to-SQL in Daily Use
 
-## One-line Summary
+> The model never writes SQL. It returns a structured plan, the server renders the SQL,
+> and a read-only gate decides whether it runs.
 
-A Text-to-SQL assistant that translates natural language questions into SQL queries and highlights practical challenges in schema grounding, query validation, failure analysis, and human-verifiable AI outputs.
+LLM은 SQL을 직접 쓰지 않습니다. 계획(JSON)만 내고, SQL은 서버가 렌더링하며, read-only 게이트를 통과해야만 실행됩니다.
+
+## Result in Production
+
+| | Before | After |
+| --- | --- | --- |
+| Quote-data lookup, per case | about 40 min | about 4 min |
+| Cases per year | — | about 490 |
+| Failure types under regression tests | — | 8 |
+
+Built and used inside 한국리서치. These are workflow-time figures, not model-accuracy figures;
+this repository does not claim private production accuracy.
+
+## My Role
+
+I led the internal AI contest team as its only engineer: defined requirements with the
+people who run the queries, then designed and built the system and shipped it into their daily work.
 
 ## Public Snapshot Scope
 
-This repository is a sanitized portfolio snapshot. It preserves the research framing, mock schema, example queries, failure taxonomy, and a small mock reference pipeline in `src/SearchProPublic`.
+This repository is a sanitized snapshot. It keeps the mock schema, example queries,
+failure taxonomy, and a small mock reference pipeline in `src/SearchProPublic`.
 
-The full local application was not copied into this public snapshot because several production files contain internal database names, schema identifiers, uploaded files, and evaluation artifacts. Those files should stay private.
+The full application is not here because production files contain internal database names,
+schema identifiers, uploaded files and evaluation artifacts. A runnable Python
+re-implementation of the trust pipeline is in
+[searchpro-py-demo](https://github.com/dingmon1019/searchpro-py-demo).
 
-## Portfolio Framing
-
-**Positioning:** Backend Engineer -> XAI / Agent Explainability / Text-to-SQL Evaluation Researcher-in-Progress
-
-Search-Pro is framed here as an engineering case study: how a production-style backend experience can become a concrete research question about explainability, evaluation, and trust in Text-to-SQL systems.
-
-The core lesson is that Text-to-SQL is not only about generating a syntactically correct query. A useful system also has to make the generated query understandable, verifiable, and debuggable by humans.
-
-## Why This Project Matters
-
-Text-to-SQL systems can fail in ways that are hard to see from the final table alone:
-
-- How can a human trust SQL generated from a natural language question?
-- What failures appear when a query is generated without strong schema grounding?
-- How should Text-to-SQL be evaluated beyond exact-match accuracy?
-- Can validation, execution feedback, and explanation traces make generated queries easier to debug?
-
-This project explores those questions through a backend pipeline that routes a user question, grounds it in a schema catalog, asks an LLM for a structured semantic plan, renders SQL server-side, validates read-only constraints, executes a query, and returns result metadata for human review.
-
-## Engineering Evidence
-
-This repository does not claim private production accuracy. Instead, it shows how a Text-to-SQL system was hardened through schema grounding, guarded SQL generation, validation layers, result contracts, and regression-oriented failure analysis.
-
-Quantitative evidence below comes from a sanitized audit of the private development history before this public snapshot was created. The original history and internal data are not included in this repository.
-
-| Evidence | Count |
-| --- | ---: |
-| Text-to-SQL related commits reviewed | 124 |
-| Guard / validation / trust related commits reviewed | 84 |
-| Text-to-SQL model-side files reviewed | 114 |
-| Text-to-SQL related test files reviewed | 72 |
-| Trust contract modules reviewed | 7 |
-| Sensitive keyword hits in this public snapshot | 0 |
-| Forbidden tracked files in this public snapshot | 0 |
-
-```mermaid
-pie title Text-to-SQL Hardening Commit Signal
-    "Guard / validation / trust commits" : 84
-    "Other Text-to-SQL commits" : 40
-```
-
-```mermaid
-pie title Verification Artifact Mix
-    "Model-side files" : 114
-    "Test files" : 72
-    "Trust contract modules" : 7
-```
-
-See [docs/engineering-evidence.md](docs/engineering-evidence.md) for the guardrail comparison and failure coverage matrix.
+How the system was hardened over its private development history (guardrail comparison and
+failure coverage) is summarized in [docs/engineering-evidence.md](docs/engineering-evidence.md).
 
 ## System Flow
 
@@ -90,9 +64,9 @@ These features were verified in the original local source before sanitization. T
 - SQL viewing is gated by a session-backed unlock flow, instead of being exposed by default.
 - Failure collection, saved conversation review, golden draft generation, and regression-oriented test assets exist for development and evaluation workflows.
 
-## Research Connection
+## Open Questions
 
-This project connects backend engineering work to the following research questions:
+Questions this work left me with:
 
 - How can Text-to-SQL systems expose enough reasoning trace for human verification?
 - What SQL generation failures appear in schema-grounded enterprise DBs?
@@ -152,18 +126,14 @@ Do not publish:
 
 Use `.env.example`, `appsettings.example.json`, and `docs/mock-schema.sql` for public configuration and examples. Any local `appsettings*.json` file must be scrubbed or replaced with placeholders before GitHub publication.
 
-## Planned
+## Not in This Repository Yet
 
-These are intentionally listed as planned work, not current functionality:
+Listed so nothing here is mistaken for current functionality:
 
 - A public demo mode backed only by the mock schema.
 - A human-readable query explanation panel that maps natural language phrases to schema fields.
 - A formal evaluation dashboard comparing exact match, execution accuracy, safety rejection, trace quality, and debuggability.
 - A reproducible benchmark package that can run without internal data.
-
-## ICML 2026 Conversation Angle
-
-> I built a Text-to-SQL style assistant where natural language questions are converted into SQL and executed against a database. What interested me was not only generation accuracy, but how humans can verify, debug, and trust the generated query. I am now connecting this engineering experience to explainability, schema grounding, and evaluation.
 
 ## Documentation Map
 
